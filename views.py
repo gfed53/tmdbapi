@@ -2,10 +2,10 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest, JsonResponse
 
-# import config
+from .config import *
 
 import tmdbsimple as tmdb
-# tmdb.API_KEY = API_KEY
+tmdb.API_KEY = API_KEY
 
 mock_data = {}
 mock_data['name'] = 'GoodFellas'
@@ -39,7 +39,7 @@ def get_movies(request):
 
 
 
-  discover = tmdb.Discover
+  discover = tmdb.Discover()
   response_data = discover.movie(
     with_genres=genres,
     release_date_gte=dateFromFormatted,
@@ -47,7 +47,7 @@ def get_movies(request):
     )
 
 
-  return JsonResponse({'data': response_data})
+  return JsonResponse({'tmdb_results': response_data})
 
 def get_movie_genres(request):
   genre = tmdb.Genres()
