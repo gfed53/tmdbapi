@@ -22,4 +22,17 @@ urlpatterns = [
 ]
 ```
 
+* You would also need to allow CORS since your front end will most likely be at a different domain. You can install the [django-cors-headers](https://github.com/ottoyiu/django-cors-headers) package in your current environment:
+
+`pip install django-cors-headers`
+
+You can then go to your `settings.py` and add this to the bottom of your page:
+
+```python
+# All origins will be accepted
+CORS_ORIGIN_ALLOW_ALL = True
+```
+
+You probably woudn't want to do this in production since it allows ANYONE to access your back end, so you can set certain domains to whitelist. The [documentation](https://github.com/ottoyiu/django-cors-headers) goes into further detail.
+
 * Enjoy!
