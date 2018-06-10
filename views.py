@@ -33,14 +33,16 @@ def get_movies(request):
   if 'dateFrom' in params:
     dateFrom = params['dateFrom']
     dateFromFormatted = dateFrom + '-01-01'
-    my_kwargs['release_date_gte'] = dateFromFormatted
+    my_kwargs['primary_release_date_gte'] = dateFromFormatted
     print('dateFromFormatted',dateFromFormatted)
 
   if 'dateTo' in params:
     dateTo = str(int(params['dateTo']) + 1)
     dateToFormatted = dateTo + '-01-01'
-    my_kwargs['release_date_lte'] = dateToFormatted
+    my_kwargs['primary_release_date_lte'] = dateToFormatted
     print('dateToFormatted',dateToFormatted)
+
+  print('my_kwargs',my_kwargs)
 
   discover = tmdb.Discover()
   response_data = discover.movie(**my_kwargs)
