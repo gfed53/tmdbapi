@@ -56,23 +56,30 @@ def get_movie_genres(request):
   genre = tmdb.Genres()
 
   # Check if there is a CacheList entry where name='genres' here
+  # Soon we will also check if list is old and needs to be updated
   
+  if CachedList.objects.filter(name='genres'):
+    print('genres exists',CachedList.objects.filter(name='genres'))
+    cl = CachedList.objects.filter(name='genres')[0]
+    response_data_str = cl.list_data
+    print('response_data_str',response_data_str)
+    response_data = json.loads(response_data_str)
 
-  response_data = genre.movie_list()
+    return JsonResponse(response_data)
+  else:
+    response_data = genre.movie_list()
 
-  # Basic implementation - create an entry into the CacheList model (after every API call while we're testing this out)
+    # Basic implementation - create an entry into the CacheList model 
 
+    response_data_str = json.dumps(response_data)
 
-  # response_data_str = str(response_data)
-  # cl = CachedList(
-  #   name='genres',
-  #   list_data=response_data_str,
-  #   date_updated=timezone.now()
-  # )
+    cl = CachedList(
+      name='genres',
+      list_data=response_data_str,
+      date_updated=timezone.now()
+    )
 
-  # cl.save()
+    cl.save()
 
-
-
-  return JsonResponse(response_data)
+    return JsonResponse(response_data)
 
