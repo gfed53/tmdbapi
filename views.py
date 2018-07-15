@@ -10,16 +10,6 @@ from .config import *
 import tmdbsimple as tmdb
 tmdb.API_KEY = API_KEY
 
-mock_data = {}
-mock_data['name'] = 'GoodFellas'
-mock_data['year'] = 1990
-
-def index(request):
-  return HttpResponse('Hello World.')
-
-def get_movie(request):
-  return JsonResponse(mock_data)
-
 def get_movies(request):
   json_data = json.loads(request.body)
   print('json_data',json_data)
@@ -32,25 +22,25 @@ def get_movies(request):
   if 'genres' in params:
     genres = '|'.join(str(x) for x in params['genres'])
     my_kwargs['with_genres'] = genres
-    print('genres',genres)
+    # print('genres',genres)
 
   if 'dateFrom' in params:
     dateFrom = params['dateFrom']
     dateFromFormatted = dateFrom + '-01-01'
     my_kwargs['primary_release_date_gte'] = dateFromFormatted
-    print('dateFromFormatted',dateFromFormatted)
+    # print('dateFromFormatted',dateFromFormatted)
 
   if 'dateTo' in params:
     dateTo = str(int(params['dateTo']) + 1)
     dateToFormatted = dateTo + '-01-01'
     my_kwargs['primary_release_date_lte'] = dateToFormatted
-    print('dateToFormatted',dateToFormatted)
+    # print('dateToFormatted',dateToFormatted)
   
   if 'page' in params:
     my_kwargs['page'] = params['page']
-    print('page',my_kwargs['page'])
+    # print('page',my_kwargs['page'])
 
-  print('my_kwargs',my_kwargs)
+  # print('my_kwargs',my_kwargs)
 
   discover = tmdb.Discover()
   response_data = discover.movie(**my_kwargs)
@@ -64,10 +54,10 @@ def get_movie_genres(request):
   # Soon we will also check if list is old and needs to be updated
   
   if CachedList.objects.filter(name='genres'):
-    print('genres exists',CachedList.objects.filter(name='genres'))
+    # print('genres exists',CachedList.objects.filter(name='genres'))
     cl = CachedList.objects.filter(name='genres')[0]
     response_data_str = cl.list_data
-    print('response_data_str',response_data_str)
+    # print('response_data_str',response_data_str)
     response_data = json.loads(response_data_str)
 
     return JsonResponse(response_data)
