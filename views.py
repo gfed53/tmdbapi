@@ -36,6 +36,17 @@ def get_movies(request):
     my_kwargs['primary_release_date_lte'] = dateToFormatted
     # print('dateToFormatted',dateToFormatted)
   
+  # Default sort order
+  sort_by_tup = ['popularity','desc']
+
+  if 'orderType' in params:
+    sort_by_tup[0] = params['orderType']
+
+  if 'orderDirection' in params:
+    sort_by_tup[1] = params['orderDirection']
+
+  my_kwargs['sort_by'] = '.'.join(x for x in sort_by_tup)
+  
   if 'page' in params:
     my_kwargs['page'] = params['page']
     # print('page',my_kwargs['page'])
