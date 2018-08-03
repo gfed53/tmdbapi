@@ -6,19 +6,28 @@ from .models import CachedList
 from django.utils import timezone
 
 from .config import *
+import tmdbsimple as tmdb
+
 from .helpers.get_movie_genres import *
 
-import tmdbsimple as tmdb
 tmdb.API_KEY = API_KEY
 
 def get_movies(request):
   json_data = json.loads(request.body)
   print('json_data',json_data)
   params = json_data['params']
-  my_kwargs = getKwargs(params)
+  my_kwargs = get_kwargs(params)
+
+  print('my_kwarg length',len(my_kwargs))
 
   discover = tmdb.Discover()
-  response_data = discover.movie(**my_kwargs)
+
+  # if len(my_kwargs) > 3:
+  #   # We need to do a 'modified' search
+  #   print('do something else!')
+  # else: 
+    # response_data = discover.movie(**my_kwargs)
+  response_data = modified_discover(my_kwargs)
 
   return JsonResponse({'tmdb_results': response_data})
 

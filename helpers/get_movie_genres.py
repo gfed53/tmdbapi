@@ -1,7 +1,12 @@
+from ..config import *
+import tmdbsimple as tmdb
+
+tmdb.API_KEY = API_KEY
+
 # Any helper functions used within get_movie_genres view.
 
 
-def getKwargs(params):
+def get_kwargs(params):
   """Takes params fetched from front end and returns kwargs object, properly formatted, to be used in API call"""
   # This is basically a list of options that will be passed to the request.
   my_kwargs = {}
@@ -39,6 +44,17 @@ def getKwargs(params):
     my_kwargs['page'] = params['page']
     # print('page',my_kwargs['page'])
 
-  # print('my_kwargs in helper',my_kwargs)
+  print('my_kwargs in helper',my_kwargs)
 
   return my_kwargs
+
+def modified_discover(my_kwargs):
+  """Should take care of issue when we have more than 3 params"""
+  discover = tmdb.Discover()
+
+  if len(my_kwargs) > 3:
+    # We need to do a 'modified' search
+    print('do something else!')
+  else: 
+    response_data = discover.movie(**my_kwargs)
+    return response_data
