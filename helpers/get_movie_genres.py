@@ -55,6 +55,37 @@ def modified_discover(my_kwargs):
   if len(my_kwargs) > 3:
     # We need to do a 'modified' search
     print('do something else!')
+    # To start, maybe just create two kwargs variables - one holding dateAfter and one holding dateBefore
+    my_kwargs_dfrom = removekey(my_kwargs, 'primary_release_date_lte')
+    my_kwargs_dafter = removekey(my_kwargs, 'primary_release_date_gte')
+
+    response_data_dfrom = discover.movie(**my_kwargs_dfrom)
+    response_data_dafter = discover.movie(**my_kwargs_dafter)
+
+    # print('response_data_dfrom results',response_data_dfrom['results'])
+    # print('response_data_dafter results',response_data_dafter['results'])
+
+    # movies_dfrom = response_data_dfrom['results']
+    # movies_dafter = response_data_dafter['results']
+
+    # print('movies_dfrom',movies_dfrom)
+    # print('movies_dafter',movies_dafter)
+
+    return {
+      # Mock for now, just passing in info of one of the two lists
+      'results': response_data_dfrom['results'],
+      'page': response_data_dfrom['page'],
+      'total_pages': response_data_dfrom['total_pages']
+    }
+
   else: 
     response_data = discover.movie(**my_kwargs)
     return response_data
+
+def removekey(d, key):
+    r = dict(d)
+    del r[key]
+    return r
+
+def merge_and_remove_dups(list_a,list_b, prop):
+  """Takes two lists (for now), combines them and removes any duplicate objects based on prop"""

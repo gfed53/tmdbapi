@@ -22,11 +22,7 @@ def get_movies(request):
 
   discover = tmdb.Discover()
 
-  # if len(my_kwargs) > 3:
-  #   # We need to do a 'modified' search
-  #   print('do something else!')
-  # else: 
-    # response_data = discover.movie(**my_kwargs)
+ 
   response_data = modified_discover(my_kwargs)
 
   return JsonResponse({'tmdb_results': response_data})
